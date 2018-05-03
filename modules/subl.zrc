@@ -1,4 +1,4 @@
-unamestr=`uname`
+unamestr=$(uname)
 
 if [ $unamestr = "Darwin" ]; then
 	export PATH="$PATH:/Applications/Sublime Text.app/Contents/SharedSupport/bin"
