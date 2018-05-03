@@ -3,8 +3,8 @@
 # Manages module loaded / common functionality 
 # in rc files to be shared across machines/
 #############################
-export _ZRC_LOADED_MODULES=()
-export _ZRC_DISABLE_MODULE_MANAGEMENT=false
+_ZRC_LOADED_MODULES=()
+_ZRC_DISABLE_MODULE_MANAGEMENT=false
 
 #############################
 # Check Config
