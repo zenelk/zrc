@@ -1,2 +1,0 @@
-export PATH="$PATH:$HOME/Dropbox/Programming/Scripts/logcat"
-alias loga="itermocil android"

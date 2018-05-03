@@ -20,15 +20,3 @@ ci() {
 		;;
 	esac
 }
-
-# j-seed () {
-#     local ci_system="$(j-running)"
-#     [[ -z $ci_system ]] && {
-#         rad-red "No ci system running"
-#         return
-#     }
-#     local current_branch
-#     [[ -n $1 ]] && current_branch=$1  || current_branch="$(git -C ~/code/jenkins_dsl_jobs rev-parse --abbrev-ref HEAD)"
-#     rad-yellow "Rebuilding jenkins seed-job with branch $(rad-cyan $current_branch)"
-#     curl --fail -X POST http://localhost/${ci_system}/job/seed-job/build --data-urlencode json='{"parameter": [{"name":"branch", "value":"'"${current_branch}"'"}]}'
-# }
