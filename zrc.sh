@@ -5,6 +5,7 @@
 #############################
 _ZRC_LOADED_MODULES=()
 _ZRC_DISABLE_MODULE_MANAGEMENT=false
+_ZRC_MODULES_DIR="$ZRC_DIR/modules"
 
 #############################
 # Check Config
@@ -14,8 +15,8 @@ if [ ${#ZRC_MODULES[@]} -eq 0 ]; then
 	echo "ZRC_MODULES is empty! Did you mean to do this? Define them in your '~/.zshrc' file."
 fi
 
-if [ -z $ZRC_MODULE_DIRECTORY ]; then
-	echo "No ZRC_MODULE_DIRECTORY! Modules cannot be loaded without this path. Define it in your '~/.zshrc' file."
+if [ -z $ZRC_DIR ]; then
+	echo "No ZRC_DIR! Modules cannot be loaded without this path. Define it in your '~/.zshrc' file."
 	_ZRC_DISABLE_MODULE_MANAGEMENT=true
 fi
 
@@ -35,7 +36,7 @@ zrc() {
 	case $1 in
 	mod)
 		if [ "$_ZRC_DISABLE_MODULE_MANAGEMENT" = true ]; then
-			echo "Module management is disabled because there is no module source directory specified. Define 'ZRC_MODULE_DIRECTORY' in your '~/.zshrc' and 'rez' to re-enable."
+			echo "Module management is disabled because there is no module source directory specified. Define 'ZRC_DIR' in your '~/.zshrc' and 'rez' to re-enable."
 			return 1
 		fi
 		shift
@@ -47,23 +48,10 @@ zrc() {
 _zrc_mod() {
 	case $1 in
 	edit)
-		subl "$ZRC_MODULE_DIRECTORY"
+		subl "$ZRC_MODULES_DIR"
 		;;
 	add)
-		local sourceModulePath="$ZRC_MODULE_DIRECTORY/$2"
-		echo "$sourceModulePath"
-		if [ -e "$sourceModulePath" ]; then
-			local newModulePath="$ZRC_MODULE_DIRECTORY/$2"
-		elif [ -e "$sourceModulePath.zrc_module" ]; then
-			local newModulePath="$ZRC_MODULE_DIRECTORY/$2.zrc_module"
-			sourceModulePath="$ZRC_MODULE_DIRECTORY/$2.zrc_module"
-		else
-			echo "Module '$2' does not exist!"
-			return 1
-		fi
-		
-		ln -s "$sourceModulePath" "$newModulePath"
-		load_module "$newModulePath"
+		load_module "$2"
 		;;
 	esac
 }
@@ -80,7 +68,7 @@ function require_module() {
 }
 
 function is_module_loaded() {
-	if [[ "$_ZRC_LOADED_MODULES" == *"$1"* || "$_ZRC_LOADED_MODULES" == *"$ZRC_MODULE_DIRECTORY/$1.zrc_module"* ]]; then
+	if [[ "$_ZRC_LOADED_MODULES" == *"$1"* || "$_ZRC_LOADED_MODULES" == *"$_ZRC_MODULES_DIR/$1.zrc_module"* ]]; then
 		echo "1"
 	else
 		echo "0"
@@ -88,7 +76,7 @@ function is_module_loaded() {
 }
 
 function load_module() {
-	if [ ! -d "$ZRC_MODULE_DIRECTORY" ]; then
+	if [ ! -d "$_ZRC_MODULES_DIR" ]; then
 		echo "No modules directory!"
 		return
 	fi
@@ -96,7 +84,7 @@ function load_module() {
 		no_link="${module::-1}"
 		module="$(readlink "$no_link")"
 	elif [ ! -e "$module" ]; then
-		module="$ZRC_MODULE_DIRECTORY/$module.zrc"
+		module="$_ZRC_MODULES_DIR/$module.zrc"
 		if [ ! -e "$module" ]; then
 			echo "Cannot find module $1 as itself or as path $module"
 			return
