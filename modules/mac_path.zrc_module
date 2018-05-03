@@ -1,0 +1,8 @@
+PATH="$PATH:$HOME/Library/Android/sdk/tools:$HOME/Library/Android/sdk/platform-tools:$HOME/Library/Android/ndk"
+PATH="$PATH:$HOME/Library/Android/sdk/build-tools/23.0.3"
+PATH="$PATH:/Applications/Unity/Unity.app/Contents/Frameworks/Mono/bin"
+PATH="$PATH:/Applications/Sublime Text.app/Contents/SharedSupport/bin"
+PATH="$PATH:$HOME/Dropbox/Programming/Scripts/bin"
+PATH="$PATH:$HOME/.rvm/bin"
+PATH="$PATH:$HOME/Dropbox/Programming/Scripts/git-plugins"
+export PATH="$PATH:/Users/zenel/gcc-arm-none-eabi-4_9-2015q3/bin"

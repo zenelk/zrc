@@ -1,0 +1,19 @@
+function cb() {
+	arg="$1"
+	if [[ $arg == "nc" ]]; then
+		echo "INFO: Not using cached builds!"
+		carthage bootstrap --platform iOS --no-use-binaries
+	else
+		carthage bootstrap --platform iOS --no-use-binaries --cache-builds
+	fi
+}
+
+function gcent_start() {
+	$HOME/code/gcent/sheets2/docker/start_dev.sh
+}
+
+function gcent_stop() {
+	$HOME/code/gcent/sheets2/docker/stop_dev.sh
+}
+
+alias dockernuke='docker kill $(docker ps -q); docker rm $(docker ps -a -q)'

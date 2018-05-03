@@ -1,0 +1,34 @@
+ci() {
+	case $1 in
+	seed)
+		[[ -n $2 ]] && current_branch=$1 || current_branch="$(git -C ~/code/jenkins_dsl_jobs rev-parse --abbrev-ref HEAD)"
+		curl --fail -X POST http://localhost/pt-webdev/job/seed-job/build --data-urlencode json='{"parameter": [{"name":"branch", "value":"'"${current_branch}"'"}]}'
+		echo "Started seed-job build using branch ${current_branch}"
+		;;
+	start)
+		[[ -n $3 ]] && current_branch=$1 || current_branch="$(git -C ~/code/jenkins_dsl_jobs rev-parse --abbrev-ref HEAD)"
+		case $2 in
+		web)
+			echo "Starting pt-webdev using branch ${current_branch}"
+			jc-cli -n pt-webdev start -b "${current_branch}"
+			;;
+		mob)
+			echo "Starting cba-mobile using branch ${current_branch}"
+			jc-cli -n cba-mobile start -b "${current_branch}"
+			;;
+		esac
+		;;
+	esac
+}
+
+# j-seed () {
+#     local ci_system="$(j-running)"
+#     [[ -z $ci_system ]] && {
+#         rad-red "No ci system running"
+#         return
+#     }
+#     local current_branch
+#     [[ -n $1 ]] && current_branch=$1  || current_branch="$(git -C ~/code/jenkins_dsl_jobs rev-parse --abbrev-ref HEAD)"
+#     rad-yellow "Rebuilding jenkins seed-job with branch $(rad-cyan $current_branch)"
+#     curl --fail -X POST http://localhost/${ci_system}/job/seed-job/build --data-urlencode json='{"parameter": [{"name":"branch", "value":"'"${current_branch}"'"}]}'
+# }
